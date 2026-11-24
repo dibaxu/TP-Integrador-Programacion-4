@@ -4,7 +4,7 @@ Programación IV - Tecnicatura Universitaria en Programación a Distancia, UTN.
 
 Aplicación de pedidos de comida construida según el UML. Se toman como referencia el frontend de TP10, adaptando sus contratos al TPI.
 
-- Repositorio de GitHub: 
+- Repositorio de GitHub: [Repositorio](https://github.com/dibaxu/TP-Integrador-Programacion-4)
 - Video: 
 
 ## Requisitos
