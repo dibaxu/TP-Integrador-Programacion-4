@@ -21,8 +21,7 @@ class PedidoRepository(BaseRepository[Pedido]):
     def count_by_estado(self) -> dict[str, int]:
         return dict(self.session.exec(select(Pedido.estado, func.count()).group_by(Pedido.estado)).all())
 
-    def resumen(self):
-        # La fecha del resumen se calcula en UTC, igual que las fechas persistidas.
+    def resumen(self):        
         start = datetime.combine(datetime.now(timezone.utc).date(), time.min, tzinfo=timezone.utc)
         today = self.session.exec(select(func.count()).select_from(Pedido)
             .where(Pedido.created_at >= start, Pedido.created_at < start + timedelta(days=1))).one()

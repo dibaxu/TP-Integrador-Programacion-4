@@ -44,8 +44,7 @@ class ProductoService:
             changes = data.model_dump(exclude_unset=True)
             if 'categoria_id' in changes and changes['categoria_id'] != product.categoria_id:
                 CategoriaService.active(uow, changes['categoria_id'], True)
-            product.sqlmodel_update(changes)
-            # Si cambió la FK, descartar una relación que pudiera estar cargada.
+            product.sqlmodel_update(changes)            
             if 'categoria_id' in changes:
                 uow.session.expire(product, ['categoria'])
             return ProductoRead.model_validate(product)

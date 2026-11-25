@@ -67,9 +67,7 @@ class PedidoService:
             if len(set(ids)) != len(ids):
                 raise ProductoRepetido('Un producto no puede repetirse en el pedido')
             order = uow.pedidos.add(Pedido(usuario_id=user_id, forma_pago=data.forma_pago,
-                direccion_entrega=data.direccion_entrega, notas=data.notas))
-            # Bloqueo en orden de id para evitar ventas simultáneas del mismo stock
-            # y deadlocks cuando dos carritos contienen los mismos productos.
+                direccion_entrega=data.direccion_entrega, notas=data.notas))            
             for item in sorted(data.items, key=lambda item: item.producto_id):
                 product = ProductoService.active(uow, item.producto_id, True)
                 if not product.disponible:
@@ -96,8 +94,7 @@ class PedidoService:
             if estado not in TRANSICIONES[order.estado]:
                 raise TransicionInvalida('Transición de estado inválida')
             if estado == 'CANCELADO':
-                for item in sorted(order.items, key=lambda item: item.producto_id):
-                    # Se restituye incluso si el producto se dio de baja luego de la compra.
+                for item in sorted(order.items, key=lambda item: item.producto_id):                    
                     product = uow.productos.get_by_id(item.producto_id, lock=True)
                     product.stock += item.cantidad
             order.estado = estado
